@@ -5,8 +5,6 @@ predicate Sorted(A: array<int>, lo: int, hi: int)
     forall i, j :: lo <= i <= j < hi ==> A[i] <= A[j]
 }
 
-
- 
 method InsertionSort(n: int, A: array<int>)
   requires n == A.Length
   modifies A
@@ -21,17 +19,23 @@ method InsertionSort(n: int, A: array<int>)
     decreases n - i
   {
     var j := i;
+    var key := A[i];
     
-    while j >= 1 && A[j-1] > A[j]
+    while j > 0 && A[j-1] > key
       invariant 0 <= j <= i
       invariant Sorted(A, 0, j)
-      invariant Sorted(A, j, i+1)
-      invariant forall k :: 0 <= k < j ==> A[k] <= A[j]
+      invariant forall k :: j <= k < i ==> A[k] >= key
+      invariant A[i] == key
       decreases j
     {
-      A[j-1], A[j] := A[j], A[j-1];
+      A[j] := A[j-1];
       j := j - 1;
     }
+    A[j] := key;
     i := i + 1;
+  }
+} 
+
+  
   }
 }
