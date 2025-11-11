@@ -21,12 +21,12 @@ method InsertionSort(n: int, A: array<int>)
     decreases n - i
   {
     var j := i;
-    // Shift elements greater than A[i] one position to the right
+    
     while j >= 1 && A[j-1] > A[j]
       invariant 0 <= j <= i
-      invariant Sorted(A, 0, i)
-      invariant forall k :: j <= k <= i ==> A[k] >= A[j]
-      invariant forall k, l :: 0 <= k < j && j <= l <= i ==> A[k] <= A[l]
+      invariant Sorted(A, 0, j)
+      invariant Sorted(A, j, i+1)
+      invariant forall k :: 0 <= k < j ==> A[k] <= A[j]
       decreases j
     {
       A[j-1], A[j] := A[j], A[j-1];
