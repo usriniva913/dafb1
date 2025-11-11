@@ -1,3 +1,10 @@
+predicate Sorted(A: array<int>, lo: int, hi: int)
+    reads A
+    requires 0 <= lo <= hi <= A.Length
+{
+    forall i, j :: lo <= i <= j < hi ==> A[i] <= A[j]
+}
+
 method InsertionSort(n: int, A: array<int>)
   requires n == A.Length
   modifies A
