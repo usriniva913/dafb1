@@ -1,36 +1,37 @@
-predicate Sorted(a: array<int>, lo: int, hi: int)
-  reads a
-  requires 0 <= lo <= hi <= a.Length
+predicate Sorted(A: array<int>, lo: int, hi: int)
+    reads A
+    requires 0 <= lo <= hi <= A.Length
 {
-  forall i, j :: lo <= i < j < hi ==> a[i] <= a[j]
+    forall i, j :: lo <= i <= j < hi ==> A[i] <= A[j]
 }
 
+
+ 
 method InsertionSort(n: int, A: array<int>)
   requires n == A.Length
   modifies A
-  ensures Sorted(A, 0, n)
+  ensures Sorted(A, 0, n)              
 {
   if n <= 1 { return; }
 
   var i := 1;
   while i < n
     invariant 1 <= i <= n
-    invariant Sorted(A, 0, i) // only holds after inner loop finishes
+    invariant Sorted(A, 0, i)
     decreases n - i
   {
-    var key := A[i];
     var j := i;
-    // Insert key into sorted subarray A[0..i)
-    while j > 0 && A[j-1] > key
+    // Shift elements greater than A[i] one position to the right
+    while j >= 1 && A[j-1] > A[j]
       invariant 0 <= j <= i
-      invariant forall k :: 0 <= k < j ==> A[k] <= key
-      invariant forall k :: j <= k < i ==> key <= A[k]
+      invariant Sorted(A, 0, i)
+      invariant forall k :: j <= k <= i ==> A[k] >= A[j]
+      invariant forall k, l :: 0 <= k < j && j <= l <= i ==> A[k] <= A[l]
       decreases j
     {
-      A[j] := A[j-1];
+      A[j-1], A[j] := A[j], A[j-1];
       j := j - 1;
     }
-    A[j] := key;
     i := i + 1;
   }
 }
