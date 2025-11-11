@@ -15,19 +15,22 @@ method InsertionSort(n: int, A: array<int>)
   var i := 1;
   while i < n
     invariant 1 <= i <= n
-    invariant Sorted(A, 0, i) || i == 1
+    invariant Sorted(A, 0, i) // only holds after inner loop finishes
     decreases n - i
   {
+    var key := A[i];
     var j := i;
-    while j >= 1 && A[j-1] > A[j]
+    // Insert key into sorted subarray A[0..i)
+    while j > 0 && A[j-1] > key
       invariant 0 <= j <= i
-      invariant forall k :: 0 <= k < j ==> A[k] <= A[j]
-      invariant forall k :: j <= k < i ==> A[j] <= A[k]
+      invariant forall k :: 0 <= k < j ==> A[k] <= key
+      invariant forall k :: j <= k < i ==> key <= A[k]
       decreases j
     {
-      A[j-1], A[j] := A[j], A[j-1];
+      A[j] := A[j-1];
       j := j - 1;
     }
+    A[j] := key;
     i := i + 1;
   }
 }
