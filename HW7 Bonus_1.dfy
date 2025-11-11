@@ -37,5 +37,5 @@ method InsertionSort(n: int, A: array<int>)
 } 
 
   
-  }
-}
+  
+
