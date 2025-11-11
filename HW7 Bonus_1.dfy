@@ -34,8 +34,7 @@ method InsertionSort(n: int, A: array<int>)
     A[j] := key;
     i := i + 1;
   }
-} 
-
+}
   
   
 
