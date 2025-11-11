@@ -18,18 +18,21 @@ method InsertionSort(n: int, A: array<int>)
     invariant Sorted(A, 0, i)
     decreases n - i
   {
-    var j := i;
-    // Shift elements greater than A[i] one position to the right
-    while j >= 1 && A[j-1] > A[j]
-      invariant 0 <= j <= i
+    var key := A[i];
+    var j := i - 1;
+    
+    // Find the correct position for key in A[0..i]
+    while j >= 0 && A[j] > key
+      invariant -1 <= j < i
       invariant Sorted(A, 0, i)
-      invariant forall k :: j <= k <= i ==> A[k] >= A[j]
-      invariant forall k, l :: 0 <= k < j && j <= l <= i ==> A[k] <= A[l]
-      decreases j
+      invariant forall k :: 0 <= k <= j ==> A[k] <= key
+      invariant forall k :: j+1 <= k <= i ==> A[k] >= key
+      decreases j + 1
     {
-      A[j-1], A[j] := A[j], A[j-1];
+      A[j+1] := A[j];
       j := j - 1;
     }
+    A[j+1] := key;
     i := i + 1;
   }
 }
